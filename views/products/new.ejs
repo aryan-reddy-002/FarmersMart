@@ -1,0 +1,57 @@
+
+
+<% layout('/layouts/boilerplate') %>
+
+<h2>Add Product</h2>
+<form method="POST" action="/products/new" class="needs-validation"  enctype="multipart/form-data" novalidate>
+<div class="mb-3">
+  <input name="product[name]" placeholder="Name"
+         class="form-control" required>
+  <div class="valid-feedback">Looks good!</div>
+  <div class="invalid-feedback">Please enter product name</div>
+</div>
+
+<div class="mb-3">
+  <input name="product[price]" type="number" placeholder="Price"
+         class="form-control" required min="1">
+  <div class="valid-feedback">Valid price</div>
+  <div class="invalid-feedback">Price must be greater than 0</div>
+</div>
+
+
+<div class="mb-3">
+  <input type="file" name="product[image]" class="form-control" accept="image/*">
+  <div class="valid-feedback">Image uploaded</div>
+</div>
+<div class="mb-3">
+  <input name="product[discount]" type="number"
+         placeholder="Discount %"
+         class="form-control" min="0" max="90">
+  <div class="invalid-feedback">Discount must be between 0–90%</div>
+</div>
+
+<div class="mb-3">
+  <input name="product[quantity]" type="number"
+         placeholder="Quantity"
+         class="form-control" required min="1">
+  <div class="valid-feedback">Stock OK</div>
+  <div class="invalid-feedback">Quantity required (min 1)</div>
+</div>
+
+<div class="mb-3">
+  <input name="product[category]" placeholder="Category"
+         class="form-control" required>
+  <div class="valid-feedback">Category added</div>
+  <div class="invalid-feedback">Please enter category</div>
+</div>
+
+<div class="mb-3">
+  <textarea name="product[description]"
+            placeholder="Description"
+            class="form-control" required></textarea>
+  <div class="invalid-feedback">Description required</div>
+</div>
+
+<button class="btn btn-success">Create Product</button>
+</form>
+

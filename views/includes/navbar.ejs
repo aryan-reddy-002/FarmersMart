@@ -1,0 +1,91 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm" style="background:#2E7D32">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/products">
+      <img src="/MartImages/logo.png" style="height:40px; width:40px; border-radius:50%; border: 2px solid white;">
+      <span class="fw-bold">FarmersMart</span>
+    </a>
+
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/products">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-semibold" href="#" data-bs-toggle="dropdown">
+            Categories
+          </a>
+          <ul class="dropdown-menu category-dropdown border-0 shadow">
+ <% 
+const categoryImages = {
+  Fruit: "https://cdn-icons-png.flaticon.com/512/3194/3194591.png",
+  Vegetables: "https://cdn-icons-png.flaticon.com/512/2329/2329903.png",
+  Grains: "https://cdn-icons-png.flaticon.com/512/3228/3228387.png",
+  Roots: "https://cdn-icons-png.flaticon.com/512/1041/1041344.png",
+  Flesh: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png"
+};
+%>
+
+<% for (let cat of categories) { %>
+  <li>
+    <a href="/products/category/<%= cat %>" class="dropdown-item d-flex align-items-center">
+      
+      <img 
+        src="<%= categoryImages[cat] || 'https://cdn-icons-png.flaticon.com/512/679/679922.png' %>" 
+        class="cat-icon me-2"
+        style="width:24px; height:24px; border-radius:50%;"
+      >
+
+      <span><%= cat %></span>
+    </a>
+  </li>
+<% } %>
+          </ul>
+        </li>
+        <% if(role=="owner" && username=="farmersmart") {%>
+          <li class="nav-item">
+            <a class="nav-link text-warning" href="/products/new">Add Product</a>
+          </li>
+        <% } %>
+      </ul>
+
+      <form class="d-flex my-2 my-lg-0 w-75 w-lg-25 mx-auto mx-lg-3" method="GET" action="/products">
+        <div class="input-group input-group-sm"> 
+          <input class="form-control" 
+                 type="search" 
+                 name="q" 
+                 placeholder="Search..." 
+                 value="<%= typeof q !== 'undefined' ? q : '' %>"
+                 style="border-radius: 20px 0 0 20px;"> 
+          <button class="btn btn-light" type="submit" style="border-radius: 0 20px 20px 0; border-left: none;">
+            <i class="fa fa-search text-success"></i>
+          </button>
+        </div>
+      </form>
+
+      <div class="d-flex align-items-center justify-content-between justify-content-lg-end mt-2 mt-lg-0">
+        <a href="/products/cart" class="btn position-relative me-3 p-1">
+          <i class="fa-solid fa-cart-shopping text-white fs-4"></i>
+          <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            <%= (username && typeof currUser !== 'undefined' && currUser.cart) ? currUser.cart.length : (typeof cartItems !== 'undefined' ? cartItems.length : 0) %>
+          </span>
+        </a>
+
+        <div class="d-flex gap-2">
+          <% if(username) { %> 
+            <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#userProfilePanel">
+              <i class="fa-solid fa-user-circle"></i> Profile
+            </button>
+            <a class="btn btn-warning btn-sm px-3 rounded-pill fw-bold" href="/logout">Logout</a>
+          <% } else { %> 
+            <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="/login">Login</a>
+            <a class="btn btn-warning btn-sm px-3 rounded-pill fw-bold" href="/signup">Signup</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

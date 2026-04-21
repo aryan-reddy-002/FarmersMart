@@ -1,0 +1,147 @@
+<% layout('layouts/boilerplate') %>
+
+<% if (msg && msg.length > 0) { %>
+    <div class="alert alert-success mt-3"><%= msg %></div>
+<% } %>
+
+<div class="hero-carousel shadow-sm">
+  
+  <h3 class="hero-title">Most Trendy Orders</h3>
+
+  <div id="heroSlider" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2500">
+
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://images.unsplash.com/photo-1553279768-865429fa0078?w=800" class="hero-img">
+      </div>
+
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800" class="hero-img">
+      </div>
+
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=800" class="hero-img">
+      </div>
+    </div>
+
+    <button class="carousel-control-prev" data-bs-target="#heroSlider" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+
+    <button class="carousel-control-next" data-bs-target="#heroSlider" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+
+  </div>
+</div>
+
+<hr class="my-4">
+
+<div class="container-fluid px-2">
+    <h2 class="mb-4 mt-2 px-2">All Products</h2>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2 g-md-3">
+        <% for (let p of allProducts) { %>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 product-card"> 
+                    
+                    <div class="square-img-container">
+                        <img src="<%= p.image.url %>" class="card-img-top product-thumb-square" alt="<%= p.name %>">
+                    </div>
+                    
+                    <div class="card-body d-flex flex-column p-2">
+                        <h6 class="product-title mb-1"><%= p.name %></h6>
+
+                        <div class="mt-auto"> 
+                            <div class="price-container mb-2 text-center">
+                                <% if(p.discount > 0){ %>
+                                    <span class="price-new text-success fw-bold">₹<%= p.price - (p.price * p.discount / 100) %></span>
+                                    <span class="price-old text-muted ms-1"><del>₹<%= p.price %></del></span>
+                                <% } else { %>
+                                    <span class="price-new text-success fw-bold">₹<%= p.price %></span>
+                                <% } %>
+                            </div>
+
+                            <% 
+                            let cartItem = null;
+                            if(typeof currUser !== 'undefined' && currUser) { 
+                                cartItem = currUser.cart.find(item => item.product.equals(p._id));
+                            } else if(typeof cartItems !== 'undefined') {
+                                cartItem = cartItems.find(item => item.product == p._id);
+                            }
+                            %>
+
+                            <div class="cart-action-wrapper"> 
+                                <% if (cartItem) { %>
+                                    <div class="qty-group-container">
+                                        <button type="button" onclick="changeQty('<%= p._id %>', 'decreasing')" class="qty-btn-custom">-</button>
+                                        <div id="qty-<%= p._id %>" class="qty-display"><%= cartItem.quantity %></div>
+                                        <button type="button" onclick="changeQty('<%= p._id %>', 'increasing')" class="qty-btn-custom">+</button>
+                                    </div>
+                                <% } else { %>
+                                    <button onclick="addToCart('<%= p._id %>')" 
+                                            class="btn btn-outline-success w-100 fw-bold h-100" 
+                                            id="cart-btn-<%= p._id %>"
+                                            style="font-size: 0.85rem;">
+                                        Add to Cart
+                                    </button>
+                                <% } %>
+                            </div>
+
+                            <a href="/products/<%= p._id %>" class="btn btn-success view-btn-custom mt-1">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<hr class="my-5">
+
+<div class="container mb-5">
+    <div class="card p-4 shadow-sm border-0 bg-light">
+        <h3 class="text-success"><i class="fa-solid fa-robot"></i> FarmersBoat AI</h3>
+        <p class="text-muted small">Ask for recipes or organic farming tips!</p>
+        
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Ask your query..." name="quest" id="query">
+            <button class="btn btn-success" type="button"  style="margin-top: 30px;"  onclick="askRecipe()">Ask</button>
+        </div>
+        
+        <div id="loading" class="text-center" style="display:none;">
+            <div class="spinner-border text-success spinner-border-sm" role="status"></div>
+            <span class="ms-2">Analyzing your query...</span>
+        </div>
+        <div id="result" class="mt-3 p-2 border-top" style="font-size: 0.95rem;"></div>
+    </div>
+</div>
+
+
+
+<script>
+async function askRecipe() {
+    const query = document.getElementById("query").value;
+    if(!query) return;
+
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("result").innerHTML = "";
+
+    try {
+const res = await fetch("/ask-gpt", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ quest: query }) 
+});
+
+        const data = await res.json();
+        document.getElementById("result").innerHTML = data.answer;
+    } catch (err) {
+        document.getElementById("result").innerHTML = "Error connecting to FarmersBoat. Please try again.";
+    } finally {
+        document.getElementById("loading").style.display = "none";
+    }
+}
+</script>

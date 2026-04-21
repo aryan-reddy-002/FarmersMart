@@ -1,0 +1,35 @@
+<% layout('layouts/boilerplate') %>
+<body>
+    
+<div>
+   <h4>All Reviews :-</h4>
+
+<% for (let r of product.reviews) { %>
+
+  <div class="row">
+    <div class="card col-5 ms-1 mb-3">
+      <div class="card-body">
+
+        
+        <h5>
+          <%= r.user?.username || "User" %>
+        </h5>
+
+        <p class="card-text"><%= r.comment %></p>
+        <%= r.rating %> 
+         <p class="starability-result" data-rating="<%= r.rating %>">
+  </p>
+        <form action="/products/<%= product._id %>/reviews/<%= r._id %>?_method=DELETE"
+              method="POST">
+          <button class="btn btn-danger mt-2">
+            Delete
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+<% } %>
+</div>
+</body>

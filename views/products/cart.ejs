@@ -1,0 +1,140 @@
+<% layout('/layouts/boilerplate') %>
+
+
+<h2 class="mb-4">🛒 Your Cart</h2>
+
+<% if (!cartItems || cartItems.length === 0) { %>
+
+  <div class="alert alert-info">
+    Your cart is empty.
+  </div>
+
+  <a href="/products" class="btn btn-success">
+    Continue Shopping
+  </a>
+
+<% } else { %>
+  <% let subtotal=0%>
+<% let total =0%>
+
+<% for (p of products) { %>
+<div class="table-responsive">
+<table class="table align-middle">
+<thead class="table-light">
+<tr >
+  <th>Product</th>
+  <th>Image</th>
+  <th>Price</th>
+  <th>Qty</th>
+  <th>Subtotal</th>
+  <th>Delete</th>
+</tr>
+</thead>
+
+<tbody>
+
+
+<tr id="row-<%= p._id %>" >
+
+<td>
+  <strong><%= p.name %></strong><br>
+  <small class="text-muted"><%= p.category %></small>
+</td>
+
+<td>
+  <img src="<%= p.image.url %>" 
+       style="width:70px;height:70px;object-fit:cover;border-radius:8px;">
+</td>
+
+<td>
+  <% if(p.discount) { %>
+  <p style="text-decoration: line-through;"><%=p.price.toFixed(1) %></p>
+  <p><%=p.price - (p.price * p.discount / 100).toFixed(1)%></p>
+  <% } else {%>
+    <p><%=p.price %></p>
+    <% } %>
+</td>
+
+<td>
+ 
+  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeQty('<%= p._id %>', 'decreasing')">−</button>
+    
+    <% 
+      // 1. Declare the variable at the top level of this block
+      let cartItem = null; 
+
+      if(currUser) { 
+          cartItem = currUser.cart.find(item => item.product.equals(p._id));
+      } else {
+          // 2. Use == for safety or .toString() for guest IDs
+          cartItem = (cartItems).find(item => item.product.toString() === p._id.toString());
+      } 
+    %>
+
+    <span  id="qty-<%= p._id %>"  class="px-2"><%= cartItem ? cartItem.quantity : 1 %></span>
+
+    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeQty('<%= p._id %>', 'increasing')">+</button>
+  
+</td>
+
+ <% 
+  let currentQty = cartItem ? cartItem.quantity : 1;
+  subtotal = currentQty * (p.price - (p.price * (p.discount || 0) / 100)).toFixed(1); 
+  total += subtotal;
+%>
+<td>
+  <span id="subtotal-<%= p._id %>"><%= subtotal.toFixed(1) %></span>
+
+</td>
+
+<td>
+<form method="POST" action="/products/cart/remove/<%= p._id %>">
+  <button class="btn btn-sm btn-danger">
+    Remove
+  </button>
+</form>
+</td>
+
+</tr>
+
+
+
+</tbody>
+</table>
+
+</div>
+<% } %>
+<a href="/products" class="btn btn-secondary">← Continue Shopping</a>
+<!-- CART SUMMARY -->
+
+<div class="card shadow-sm mt-4" style="max-width:420px">
+  <div class="card-body">
+
+    <h5>Cart Summary</h5>
+
+    <div class="d-flex justify-content-between">
+      <span>Total Items</span>
+      <strong><%= cartItems.length %></strong>
+    </div>
+
+    <div class="d-flex justify-content-between mt-2">
+      <span>Total Price</span>
+      <strong>₹ <span id="total-price"><%= total.toFixed(2) %></span></strong>
+    </div>
+
+    <!-- <a href="/checkout" class="btn btn-success w-100 mt-3">
+      Proceed to Checkout
+    </a> -->
+    <form method="post" action="/orders/checkout">
+ 
+    <button class="btn btn-success w-100 mt-3">
+      Proceed to Checkout
+    </button>
+    </form>
+
+  </div>
+</div> 
+
+<% } %>
+
+

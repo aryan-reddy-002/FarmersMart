@@ -1,0 +1,63 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  
+  <div class="card shadow-lg border-0 p-4" style="width: 100%; max-width: 400px; border-radius: 15px;">
+    
+    
+    <div class="text-center mb-3">
+      <h3 class="fw-bold" style="color:#2E7D32;">Welcome Back 🌿</h3>
+      <p class="text-muted small">Login to continue shopping fresh products</p>
+    </div>
+
+    <!-- Error -->
+    <% if(loginerror && loginerror.length > 0) { %>
+      <div class="alert alert-danger text-center py-2">
+        <%= loginerror %>
+      </div>
+    <% } %>
+
+    <!-- Form -->
+    <form method="post" class="needs-validation" novalidate>
+
+      <!-- Username -->
+      <div class="mb-3">
+        <label for="username" class="form-label fw-semibold">Username</label>
+        <input 
+          id="username" 
+          name="username" 
+          class="form-control rounded-pill px-3" 
+          placeholder="Enter your username"
+          required>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">Password</label>
+        <input 
+          id="password" 
+          name="password" 
+          type="password" 
+          class="form-control rounded-pill px-3" 
+          placeholder="Enter your password"
+          required>
+      </div>
+
+     
+      <button class="btn w-100 rounded-pill fw-bold" 
+              style="background:#2E7D32; color:white;">
+        Login
+      </button>
+
+      
+      <div class="text-center mt-3">
+        <small class="text-muted">
+          Don’t have an account?
+          <a href="/signup" class="text-success fw-semibold">Signup</a>
+        </small>
+      </div>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 85vh;">
+
+  <div class="card shadow-lg border-0 p-4" style="width: 100%; max-width: 420px; border-radius: 15px;">
+
+    <!-- Title -->
+    <div class="text-center mb-3">
+      <h3 class="fw-bold" style="color:#2E7D32;">Create Account 🌿</h3>
+      <p class="text-muted small">Join FarmersMart and start shopping fresh</p>
+    </div>
+
+    <!-- Error -->
+    <% if(errmsg && errmsg.length > 0) { %>
+      <div class="alert alert-danger text-center py-2">
+        <%= errmsg %>
+      </div>
+    <% } %>
+
+    <!-- Form -->
+    <form method="POST" action="/signup" class="needs-validation" novalidate>
+
+      <!-- Username -->
+      <div class="mb-3">
+        <input 
+          name="User[username]" 
+          placeholder="Enter your username"
+          class="form-control rounded-pill px-3" 
+          required>
+        <div class="invalid-feedback">Please enter username</div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <input 
+          name="User[email]" 
+          placeholder="Enter your email"
+          class="form-control rounded-pill px-3" 
+          required>
+        <div class="invalid-feedback">Please enter email</div>
+      </div>
+
+      <!-- Address -->
+      <div class="mb-3">
+        <input 
+          name="User[address]" 
+          placeholder="Enter your address"
+          class="form-control rounded-pill px-3" 
+          required>
+        <div class="invalid-feedback">Please enter address</div>
+      </div>
+
+      <!-- Phone -->
+      <div class="mb-3">
+        <input 
+          name="User[phoneNumber]" 
+          placeholder="Enter your phone number"
+          class="form-control rounded-pill px-3" 
+          required>
+        <div class="invalid-feedback">Please enter phone number</div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <input 
+          name="User[password]" 
+          type="password"
+          placeholder="Enter your password"
+          class="form-control rounded-pill px-3" 
+          required>
+        <div class="invalid-feedback">Please enter password</div>
+      </div>
+
+      <!-- Button -->
+      <button class="btn w-100 rounded-pill fw-bold" 
+              style="background:#2E7D32; color:white;">
+        Signup
+      </button>
+
+      <!-- Login redirect -->
+      <div class="text-center mt-3">
+        <small class="text-muted">
+          Already have an account?
+          <a href="/login" class="text-success fw-semibold">Login</a>
+        </small>
+      </div>
+
+    </form>
+
+  </div>
+</div>

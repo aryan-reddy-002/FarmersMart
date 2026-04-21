@@ -1,0 +1,96 @@
+
+
+<% layout('/layouts/boilerplate') %>
+
+<h2>Edit Product</h2>
+
+<form method="POST"
+      action="/products/<%= product._id %>?_method=PUT"
+      class="form-card needs-validation"
+      novalidate>
+
+  <!-- Name -->
+  <div class="mb-3">
+    <label class="form-label">Product Name</label>
+    <input name="product[name]"
+           value="<%= product.name %>"
+           class="form-control"
+           required>
+    <div class="invalid-feedback">Name is required</div>
+  </div>
+
+  <!-- Price -->
+  <div class="mb-3">
+    <label class="form-label">Price</label>
+    <input name="product[price]"
+           type="number"
+           value="<%= product.price %>"
+           class="form-control"
+           required min="1">
+    <div class="invalid-feedback">Enter valid price (> 0)</div>
+  </div>
+
+  <!-- Image -->
+  <div class="mb-3">
+    <label class="form-label">Image URL</label>
+
+    <!-- preview -->
+    <img src="<%= product.image %>" width="130"
+         class="d-block mb-2 rounded">
+
+    <input name="product[image]"
+           value="<%= product.image %>"
+           class="form-control"
+           required>
+    <div class="invalid-feedback">Image URL required</div>
+  </div>
+
+  <!-- Discount -->
+  <div class="mb-3">
+    <label class="form-label">Discount %</label>
+    <input name="product[discount]"
+           type="number"
+           value="<%= product.discount %>"
+           class="form-control"
+           min="0" max="90">
+    <div class="invalid-feedback">Discount must be 0–90</div>
+  </div>
+
+  <!-- Quantity -->
+  <div class="mb-3">
+    <label class="form-label">Quantity</label>
+    <input name="product[quantity]"
+           type="number"
+           value="<%= product.quantity %>"
+           class="form-control"
+           required min="0">
+    <div class="invalid-feedback">Quantity required</div>
+  </div>
+
+  <!-- Category -->
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    <input name="product[category]"
+           value="<%= product.category %>"
+           class="form-control"
+           required>
+    <div class="invalid-feedback">Category required</div>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea name="product[description]"
+              class="form-control"
+              rows="4"
+              required><%= product.description %></textarea>
+    <div class="invalid-feedback">Description required</div>
+  </div>
+
+  <button class="btn btn-primary">Update Product</button>
+
+</form>
+
+
+
+</form>

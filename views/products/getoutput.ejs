@@ -1,0 +1,13 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+    <h1>FarmersGPT Suggestion</h1>
+    <div class="chat-box">
+        <p><strong>You asked:</strong> <%= query %></p>
+        <p><strong>FarmersGPT says:</strong></p>
+        <div class="ai-response">
+            <ReactMarkdown><%-answer %></ReactMarkdown>
+             </div>
+    </div>
+    <a href="/farmers-gpt">Ask another question</a>
+    <a type="button">Go back</a>
+</body>
