@@ -47,9 +47,13 @@
                 <hr>
 
                 <div class="d-grid gap-2">
-                     <button onclick="addToCart('<%= item._id %>')" class="btn btn-success btn-lg shadow-sm py-2">
-                        <i class="fa-solid fa-cart-plus me-2"></i> Add to Cart
-                     </button>
+                    <button
+    id="cart-btn-<%= item._id %>"
+    onclick="addToCart('<%= item._id %>')"
+    class="btn btn-success btn-lg w-100">
+    <i class="fa-solid fa-cart-plus me-2"></i>
+    Add to Cart
+</button>
                 </div>
             </div>
         </div>
